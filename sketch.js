@@ -1,6 +1,6 @@
 let img;
 let pxls = [];
-let bg_clr = [0, 255, 255, 255];
+let bg_clr = [255, 255, 255, 255]; // white
 
 function preload() {
   img = loadImage('flower.jpg');
