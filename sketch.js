@@ -1,14 +1,18 @@
+function preload() {
+  img = loadImage('flower.jpg');
+}
+
 function setup() {
-  createCanvas(img.width, img.height);
+  createCanvas(img.width + img_x_offset * 2, img.height + img_y_offset * 2);
   pixelDensity(1);
-  image(img, 0, 0);
+  image(img, img_x_offset, img_y_offset);
   loadPixels();
+  // console.log(img.width * img.height);
+  // console.log(pixels.length / 4);
 
-  createCanvas(img.width, img.height + 15);
-
-  for (let y = 0; y < img.height; y++) {
-    for (let x = 0; x < img.width; x++) {
-      let index = (x + y * img.width) * 4;
+  for (let y = img_y_offset; y < img.height + img_y_offset; y++) {
+    for (let x = img_x_offset; x < img.width + img_x_offset; x++) {
+      let index = (x + y * width) * 4;
       let clr = [pixels[index], pixels[index + 1], pixels[index + 2], pixels[index + 3]];
       let pxl = new Pxl(x, y, clr, index);
       pxls.push(pxl);
@@ -31,6 +35,8 @@ function draw() {
 }
 
 let img;
+let img_x_offset = 0; // fix this
+let img_y_offset = 0;
 let pxls = [];
 let bg_clr = [255, 255, 255, 255]; // white
 let mouseX_diff
@@ -43,11 +49,7 @@ function mouse_velocity() {
   mouseY_diff = mouseY - last_mouseY;
   last_mouseX = mouseX;
   last_mouseY = mouseY;
-  console.log(mouseX_diff, mouseY_diff);
-}
-
-function preload() {
-  img = loadImage('flower.jpg');
+  // console.log(mouseX_diff, mouseY_diff);
 }
 
 class Pxl {
@@ -56,13 +58,50 @@ class Pxl {
     this.y = y;
     this.clr = clr;
     this.index = index;
+    this.x_speed = Math.round(Math.random()) * 2 - 1;
+    this.y_speed = Math.round(Math.random()) * 2 - 1;
+    // this.y_speed = 1;
   }
 
   move() {
-    let indexDown = this.index + img.width * 4;
-    if (pixels[indexDown] === bg_clr[0] && pixels[indexDown + 1] === bg_clr[1] && pixels[indexDown + 2] === bg_clr[2] && pixels[indexDown + 3] === bg_clr[3]) {
-      this.index = this.index + img.width * 4;
-      this.y++;
+    switch (this.y_speed) {
+      case -1:
+        let indexUp = this.index - width * 4;
+        if (pixels[indexUp] === bg_clr[0] && pixels[indexUp + 1] === bg_clr[1] && pixels[indexUp + 2] === bg_clr[2] && pixels[indexUp + 3] === bg_clr[3]) {
+          this.index = indexUp;
+          this.y--;
+        }
+        break;
+      case 1:
+        let indexDown = this.index + width * 4;
+        if (pixels[indexDown] === bg_clr[0] && pixels[indexDown + 1] === bg_clr[1] && pixels[indexDown + 2] === bg_clr[2] && pixels[indexDown + 3] === bg_clr[3]) {
+          this.index = indexDown;
+          this.y++;
+        }
+        break;
+    }
+
+    switch (this.x_speed) {
+      case -1:
+        let indexLeft = this.index - 4;
+        // console.log(pxls.length, this.index / 4);
+        console.log(this.y, pxls[this.index / 4].y);
+        // if (this.y === pxls[indexLeft / 4].y) {
+        if (pixels[indexLeft] === bg_clr[0] && pixels[indexLeft + 1] === bg_clr[1] && pixels[indexLeft + 2] === bg_clr[2] && pixels[indexLeft + 3] === bg_clr[3]) {
+          this.index = indexLeft;
+          this.x--;
+        }
+        // }
+        break;
+      case 1:
+        let indexRight = this.index + 4;
+        // if (this.y === pxls[indexRight / 4].y) {
+        if (pixels[indexRight] === bg_clr[0] && pixels[indexRight + 1] === bg_clr[1] && pixels[indexRight + 2] === bg_clr[2] && pixels[indexRight + 3] === bg_clr[3]) {
+          this.index = indexRight;
+          this.x++;
+        }
+        // }
+        break;
     }
   }
 
