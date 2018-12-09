@@ -46,8 +46,8 @@ class Pxl {
   move() {
     let indexDown = this.index + img.width * 4;
     if (pixels[indexDown] === bg_clr[0] && pixels[indexDown + 1] === bg_clr[1] && pixels[indexDown + 2] === bg_clr[2] && pixels[indexDown + 3] === bg_clr[3]) {
-      this.y++;
       this.index = this.index + img.width * 4;
+      this.y++;
     }
   }
 
@@ -55,4 +55,9 @@ class Pxl {
     stroke(this.clr);
     point(this.x, this.y);
   }
+}
+
+function mousePressed() {
+  pxls = [];
+  setup();
 }
