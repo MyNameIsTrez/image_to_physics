@@ -1,11 +1,3 @@
-let img;
-let pxls = [];
-let bg_clr = [255, 255, 255, 255]; // white
-
-function preload() {
-  img = loadImage('flower.jpg');
-}
-
 function setup() {
   createCanvas(img.width, img.height);
   pixelDensity(1);
@@ -25,14 +17,37 @@ function setup() {
 }
 
 function draw() {
+  mouse_velocity();
+
   background(bg_clr);
   for (let pxl in pxls) {
     pxls[pxl].draw();
   }
   loadPixels();
   for (let pxl in pxls) {
+    pxls[pxl].wind();
     pxls[pxl].move();
   }
+}
+
+let img;
+let pxls = [];
+let bg_clr = [255, 255, 255, 255]; // white
+let mouseX_diff
+let mouseY_diff
+let last_mouseX;
+let last_mouseY;
+
+function mouse_velocity() {
+  mouseX_diff = mouseX - last_mouseX;
+  mouseY_diff = mouseY - last_mouseY;
+  last_mouseX = mouseX;
+  last_mouseY = mouseY;
+  console.log(mouseX_diff, mouseY_diff);
+}
+
+function preload() {
+  img = loadImage('flower.jpg');
 }
 
 class Pxl {
@@ -54,6 +69,15 @@ class Pxl {
   draw() {
     stroke(this.clr);
     point(this.x, this.y);
+  }
+
+  wind() {
+    // if (last_mouseX !== 0 && last_mouseY !== 0) {
+    // if (mouseX > 0 && mouseY > 0) {
+    //   this.x += mouseX_diff / dist(this.x, mouseX);
+    //   this.y += mouseY_diff / dist(this.y, mouseY);
+    // }
+    // }
   }
 }
 
