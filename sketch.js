@@ -36,7 +36,7 @@ function draw() {
 
 let img;
 let img_x_offset = 0; // fix this
-let img_y_offset = 0;
+let img_y_offset = 50;
 let pxls = [];
 let bg_clr = [255, 255, 255, 255]; // white
 let mouseX_diff
@@ -85,7 +85,7 @@ class Pxl {
       case -1:
         let indexLeft = this.index - 4;
         // console.log(pxls.length, this.index / 4);
-        console.log(this.y, pxls[this.index / 4].y);
+        // console.log(this.y, pxls[this.index / 4].y);
         // if (this.y === pxls[indexLeft / 4].y) {
         if (pixels[indexLeft] === bg_clr[0] && pixels[indexLeft + 1] === bg_clr[1] && pixels[indexLeft + 2] === bg_clr[2] && pixels[indexLeft + 3] === bg_clr[3]) {
           this.index = indexLeft;
